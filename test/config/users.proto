@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+message Empty {}
+message UserRequest {
+  string _id = 1;
+}
+message UserCreatedResponse {
+  User user = 1;
+  bool created = 2;
+}
+message User {
+  string _id = 1;
+  string email = 2;
+  string firstName = 3;
+  string lastName = 4;
+  uint32 age = 5;
+  string level = 6;
+  bool meta = 7;
+}
+message Users {
+  repeated User users = 1;
+  uint32 count = 2;
+}
+service UsersService {
+  rpc getUsers (Empty) returns (Users) {}
+  rpc getUser (UserRequest) returns (User) {}
+  rpc create (User) returns (UserCreatedResponse) {}
+  rpc delete (UserRequest) returns (Empty) {}
+}

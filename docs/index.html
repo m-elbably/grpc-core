@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GrpcClient.html">GrpcClient</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcClient.html#call">call</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GrpcServer.html">GrpcServer</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcServer.html#_initialize">_initialize</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcServer.html#shutdown">shutdown</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcServer.html#start">start</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="GrpcService.html">GrpcService</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcService.html#_applyHooks">_applyHooks</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcService.html#_applyMiddlewares">_applyMiddlewares</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcService.html#descriptor">descriptor</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="GrpcService.html#implementation">implementation</a></span></li>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h2>gRPC-Core</h2><blockquote>
+<p>A simple &amp; minimal helpers for creating high performance gRPC microservices.</p>
+</blockquote>
+<p><a href="https://nodejs.org"><img src="https://img.shields.io/node/v/grpc-core.svg" alt="Node Version"></a>
+<a href="https://www.npmjs.com/package/grpc-core"><img src="https://img.shields.io/npm/v/grpc-core.svg" alt="npm version"></a>
+<a href="https://img.shields.io/circleci/project/github/m-elbably/grpc-core.svg"><img src="https://img.shields.io/circleci/project/github/m-elbably/grpc-core.svg" alt="Build Status"></a>
+<a href="https://coveralls.io/github/m-elbably/grpc-core"><img src="https://img.shields.io/coveralls/github/m-elbably/grpc-core.svg" alt="coverage status"></a>
+<a href="https://raw.githubusercontent.com/m-elbably/grpc-core/master/LICENSE"><img src="https://img.shields.io/github/license/m-elbably/grpc-core.svg" alt="License"></a></p>
+<p>This package will simplify the creation of gRPC servers and services, you will just need to extend base GrpcService and implement remote functions, this library will turn your normal functions into gRPC callable functions, which makes it easy to create microservices in a clean way.</p>
+<p>Basic microservice archticture using helpers in this library
+<br></p>
+<p><img src="https://raw.githubusercontent.com/m-elbably/grpc-core/master/docs/diagram.png" alt="gRPC-Core Diagram" title="Basic microservice architecture with gRPC"></p>
+<blockquote>
+<ul>
+<li>You need to be familiar with gRPC and protocol buffers.</li>
+<li>Example in this package uses the proto3 version of the protocol buffers language.</li>
+<li>You can find out more about gRPC and proto3 in <a href="#references">References</a> section.</li>
+</ul>
+</blockquote>
+<h4>Installation</h4><pre class="prettyprint source"><code>npm install grpc-core --save</code></pre><h4>Package Components</h4><ul>
+<li>GrpcServer: Main entry point to gRPC microservice</li>
+<li>GrpcService: Service endpoint</li>
+<li>GrpcClient: gRPC client to call service methods remotly</li>
+</ul>
+<h4>1- gRPC Server</h4><p>You will need to create a new instance from GrpcServer with appropriate configurations then start your server.</p>
+<blockquote>
+<p>You can register one or more gRPC services with the same server</p>
+</blockquote>
+<p>Example:</p>
+<pre class="prettyprint source lang-js"><code>const { GrpcServer } = require('grpc-core');
+const UsersService = require('./UsersService');
+const database = require('./database');
+
+const server = new GrpcServer({
+    host: 'localhost',
+    port: 3000,
+    services: [
+        UsersService
+    ],
+    onStart: async () => {
+        return database.connect();
+    },
+    onConnected: () => {
+        console.log('Users service is up');
+    }
+});
+
+server.start(); </code></pre><p><strong>GrpcService constructor(config)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>host</td>
+<td><code>string</code></td>
+<td>Server host</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>port</td>
+<td><code>number</code></td>
+<td>Server port</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>services</td>
+<td><code>Array.&lt;GrpcService&gt;</code></td>
+<td>Array of GrpcService derived classes to be exposed</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td>onConnected</td>
+<td><code>function</code></td>
+<td>Function to be executed after server connection</td>
+<td><em>Optional</em></td>
+</tr>
+<tr>
+<td>onStart</td>
+<td><code>function</code></td>
+<td>Function to be executed before server start (ex. db connection)</td>
+<td><em>Optional</em></td>
+</tr>
+<tr>
+<td>onClose</td>
+<td><code>function</code></td>
+<td>Function to be executed before server shutdown (ex. close db connection)</td>
+<td><em>Optional</em></td>
+</tr>
+</tbody>
+</table>
+<h4>2- gRPC Service</h4><p>You will need to create your own service class which extends GrpcService class, and normal class methods will ne callable from your GrpcClient.</p>
+<blockquote>
+<ul>
+<li>Async methods are supported.</li>
+<li>Methods starts with _ <code>underscore</code> will be ignored and considered private, so it will not be exposed into your gRPC service, even if you expose it in your protobuf schema, so it will get missing implementation error.</li>
+</ul>
+</blockquote>
+<p>Example:</p>
+<pre class="prettyprint source lang-js"><code>const path = require('path');
+const { GrpcService } = require('grpc-core');
+const hooks = require('../grpc/serviceHooks');
+const middlewares = require('../grpc/serviceMiddlewares');
+const PROTO = path.join(__dirname, '../config/proto/users.proto');
+const User = require('../database/models/user');
+
+class UsersService extends GrpcService {
+    constructor(){
+        super({
+            proto: PROTO,
+            hooks: hooks,
+            middlewares: middlewares
+        });
+    }
+
+    // Private method (will not be callable)    
+    async _getUserId(user) {
+        return user._id;
+    }
+
+    async getUsers(ctx) {
+        return User.find({});
+    }
+
+    async create(ctx){
+        try {
+            const body = ctx.request;
+            await ctx.validateParams(userCreateSchema, body);
+            return User.create(body);
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async update(ctx){
+        try {
+            const _id = ctx.request._id;          
+        // Your update code
+            return { updated: true};
+        } catch(err) {
+            throw err;
+        }
+    }
+
+    async delete(ctx) {
+        try {
+            const _id = ctx.request._id;          
+        // Your delete code
+            return { delete: true};
+        } catch(err){
+            throw err;
+        }
+    }
+}</code></pre><p><strong>GrpcService Hooks</strong></p>
+<blockquote>
+<p><strong>Hooks</strong> are simply helper functions to be attached to request context (ctx) object, which will be passed later to callee function.</p>
+</blockquote>
+<blockquote>
+<p><em>Hooks are passed to GrpcService as an object which contains all hook functions</em>  </p>
+</blockquote>
+<p>Ex. if we need the request context object to have our own validation function, we will need to define this in hooks:</p>
+<pre class="prettyprint source lang-js"><code>// hooks.js
+module.exports = {
+  validate: (body) => {
+    // Validation logic here
+  }
+};</code></pre><pre class="prettyprint source lang-js"><code>// Then use it in service definition
+const { GrpcService } = require('grpc-core');
+const hooks = require('./hooks');
+const proto = path.join(__dirname, './users.proto');
+
+class UsersService extends GrpcService {
+  constructor() {
+    super({
+      proto,
+      hooks
+    });
+  }
+
+  // within our remote function implementation, 
+  // hook function will be attached to context object for convenience.
+  async create(ctx) {
+      try {
+        const user = ctx.request;
+        // validate function attached to context object
+        ctx.validate(user);
+        // add user logic
+        return user;
+      }
+      catch(err){
+        throw err;
+      }
+  }
+}
+
+module.exports = new UsersService();</code></pre><p><strong>GrpcService Middlewares</strong></p>
+<blockquote>
+<p><strong>Middlewares</strong> are just functions that will be execute in order before service function
+ and will have the request context as an argument, so inside middleware you can manipulate request data, or request context itself</p>
+</blockquote>
+<blockquote>
+<p><em>Middlewares are passed to GrpcService as an array of functions</em></p>
+</blockquote>
+<p>Ex. Adding middleware to parse request metadata and add it to <em>params</em> field:</p>
+<pre class="prettyprint source lang-js"><code>// middlewares.js
+module.exports = [
+  // Metadata parser
+  (ctx) => {
+    try {
+      const md = ctx.metadata.getMap();
+      if (md) {
+        ctx.params = md;
+      }
+    }catch (err) {
+      throw err;
+    }
+  }
+];</code></pre><pre class="prettyprint source lang-js"><code>// Then use it in service definition
+const { GrpcService } = require('grpc-core');
+const middlewares = require('./middlewares');
+const proto = path.join(__dirname, './users.proto');
+
+class UsersService extends GrpcService {
+  constructor() {
+    super({
+      proto,
+      middlewares
+    });
+  }
+
+  // within our remote function implementation, 
+  // ctx object should contain [params] field if caller passed any metadata
+  async create(ctx) {
+      try {
+        const params = ctx.params;
+        return params;
+      }
+      catch(err){
+        throw err;
+      }
+  }
+}</code></pre><h4>3- gRPC Client</h4><blockquote>
+<p>GrpcClient instance is required to call remote GrpcService functions,
+It has only one function &quot;call&quot; which enable a simple way call remote functions.</p>
+</blockquote>
+<p>Creating new GrpcClient:</p>
+<pre class="prettyprint source lang-js"><code>// usersClient.js
+const path = require('path');
+const { GrpcClient } = require('grpc-core');
+const usersProto = path.join(__dirname, './users.proto');
+
+module.exports = new GrpcClient({
+  proto: usersProto,
+  service: 'UsersService',
+  url: 'localhost:3000',
+});</code></pre><p>Using GrpcClient:</p>
+<pre class="prettyprint source lang-js"><code>const client = require('./usersClient');
+
+async function createUser() {
+    try {
+      const result = await client.call('create', {email: 'test@grpccore.com'});
+
+    } catch(err){
+      throw err;
+    }
+}</code></pre><p>TODO</p>
+<ul>
+<li>[ ] Example - API Gateway with simple services</li>
+<li>[ ] gRPC errors handling  </li>
+</ul>
+<h4>References</h4><ul>
+<li><a href="https://grpc.io">gRPC</a></li>
+<li><a href="https://grpc.io/docs/tutorials/basic/node.html">gRPC Node.js</a></li>
+<li><a href="https://developers.google.com/protocol-buffers/docs/proto3">proto3 language guide</a></li>
+<li><a href="https://microservices.io">Microservices Architecture</a></li>
+</ul>
+<h4>License</h4><p>MIT</p></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

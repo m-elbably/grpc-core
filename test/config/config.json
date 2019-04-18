@@ -1,0 +1,12 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 5000
+  },
+  "services": {
+    "users": {
+      "host": "localhost",
+      "port": 5001
+    }
+  }
+}
