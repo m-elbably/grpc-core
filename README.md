@@ -2,7 +2,7 @@
 > A simple & minimal helpers for creating high performance gRPC microservices.
 
 [![Node Version](https://img.shields.io/node/v/grpc-core.svg)](https://nodejs.org)
-[![npm version](https://img.shields.io/npm/v/grpc-core.svg)](https://www.npmjs.com/package/grpc-core)
+[![npm version](https://img.shields.io/npm/v/grpc-core/latest.svg)](https://www.npmjs.com/package/grpc-core)
 [![Build Status](https://img.shields.io/circleci/project/github/m-elbably/grpc-core.svg)](https://img.shields.io/circleci/project/github/m-elbably/grpc-core.svg)
 [![coverage status](https://img.shields.io/coveralls/github/m-elbably/grpc-core.svg)](https://coveralls.io/github/m-elbably/grpc-core)
 [![License](https://img.shields.io/github/license/m-elbably/grpc-core.svg)](https://raw.githubusercontent.com/m-elbably/grpc-core/master/LICENSE)
