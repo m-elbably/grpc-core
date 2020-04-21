@@ -1,6 +1,6 @@
 {
   "name": "grpc-core",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A simple & minimal helpers for creating gRPC microservices",
   "main": "lib/index.js",
   "scripts": {
