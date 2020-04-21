@@ -10,8 +10,8 @@
     "docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose"
   },
   "dependencies": {
-    "@grpc/proto-loader": "^0.5.1",
-    "grpc": "^1.22.2"
+    "@grpc/proto-loader": "^0.5.2",
+    "grpc": "^1.24.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
