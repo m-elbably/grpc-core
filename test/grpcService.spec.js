@@ -31,7 +31,8 @@ describe('Test gRPC Service', () => {
       const result = await client.call('create',{
         email: 'client@grpccore.com',
         firstName: 'grpc',
-        lastName: 'user'
+        lastName: 'user',
+        age: 24
       });
 
       expect(result)
@@ -41,6 +42,9 @@ describe('Test gRPC Service', () => {
       expect(result)
         .to.have.own.property('created')
         .to.be.equal(true);
+
+      expect(result.user.age)
+        .to.be.equal(21);
 		} catch(err){
 			throw err;
 		}

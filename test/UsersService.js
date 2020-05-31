@@ -11,6 +11,11 @@ class UsersService extends GrpcService {
       proto,
       hooks,
       middlewares,
+      onResponse: (res) => {
+        if(res.user && res.user.age) {
+          res.user.age = res.user.age - 3;
+        }
+      },
       onError: (err) => {
         return err;
       }
